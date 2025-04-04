@@ -18,7 +18,9 @@ const schemaUsers = new mongoose.Schema({
         type: Number,
     },
     bookings: {
-        type: Object,
+        shiftFrom: { type: String },
+        shiftTo: { type: String },
+        shiftType: { type: String }
     }
 },
 {

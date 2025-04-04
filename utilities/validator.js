@@ -42,6 +42,7 @@ exports.validateEmail = (email) => {
         err.status = 400;
         throw err;
     }
+    return true;
 };
 
 exports.validateName = (name) => {
@@ -50,7 +51,7 @@ exports.validateName = (name) => {
         err.status = 400;
         throw err;
     }
-
+    return true;
 };
 
 
@@ -62,7 +63,17 @@ exports.validateExistingEmail = async (email) => {
         err.status = 400;
         throw err;
     }
-}
+    return true;
+};
+
+exports.validateShiftType = (shift) => {
+    if (shift.lowerCase() != 'house' || shift.lowerCase() != 'vehicle') {
+        let err = new Error("Shift type is invalid");
+        err.status = 400;
+        throw err;
+    }
+    return true;
+};
 
 
 
