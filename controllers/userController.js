@@ -1,7 +1,10 @@
 const userModel = require('../models/user');
+const packageModel = require('../models/package');
+
 
 const validator = require('../utilities/validator');
 const encrypt = require('../utilities/encrypt');
+
 
 exports.registerUser = async (req, res, next) => {
     
@@ -21,7 +24,12 @@ exports.registerUser = async (req, res, next) => {
             name: name,
             emailId: emailId,
             password: encrypt.encrypt(password),
-            phoneNo: phoneNo,    
+            phoneNo: phoneNo,
+            bookings: {
+                shiftFrom: "",
+                shiftTo: "",
+                shiftType: ""
+            } 
         })
         .then((result) => {
             res.status(201).json({
@@ -69,4 +77,64 @@ exports.loginUser = async (req, res, next) => {
     }
 };
 
+exports.getPackages = async (req, res, next) => {
+    
+    try {
+        const packages = await packageModel.find();
 
+        if  (packages.length > 0) {
+            return res.status(200).json({
+                packages
+            })
+        } else {
+            return res.status(400).json({
+                message: "No packages results"
+            })
+        }
+
+    } catch(err) {
+        next(err);
+    }
+    
+
+};
+
+
+exports.bookSlot = async (req, res, next) => {
+    
+    const emailId = req.body.emailId;
+    const { shiftFrom, shiftTo, shiftType } = req.body.bookings;
+    //console.log(req.body.bookings);
+    //console.log(emailId);
+    try {
+        const filter = { emailId: emailId };
+        const update = {
+            name: 'updated name',
+            bookings: {
+                shiftFrom: shiftFrom,
+                shiftTo: shiftTo,
+                shiftType: shiftType
+            }
+        }
+        console.log(filter);
+        console.log(update);
+        await packageModel.updateOne(filter, update)
+                        // .then(() => {
+                        //     res.status(200).json({
+                        //         message: "Booking successful"
+                        //     })
+                        // })
+                        // .catch(err => {
+                        //     err.message = "Booking failed"
+                        //     err.status = 400
+                        //     next(err)
+                        // })
+
+
+
+    } catch(err) {
+        next(err);
+    }
+
+
+};

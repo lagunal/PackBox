@@ -12,6 +12,11 @@ router.post('/users', userController.registerUser);
 
 router.post('/login', userController.loginUser);
 
+router.get('/packages', userController.getPackages);
+
+router.put('/bookings', userController.bookSlot);
+
+
 
 
 module.exports = router;
