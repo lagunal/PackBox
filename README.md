@@ -1,3 +1,3 @@
 # PackBox
 node.js application
-Go to branch master
+Go to master branch
