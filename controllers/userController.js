@@ -6,7 +6,7 @@ const validator = require('../utilities/validator');
 const encrypt = require('../utilities/encrypt');
 
 
-exports.registerUser = async (req, res, next) => {
+const registerUser = async (req, res, next) => {
     
     const { name, emailId, password, phoneNo } = req.body;
 
@@ -49,7 +49,7 @@ exports.registerUser = async (req, res, next) => {
 
 };
 
-exports.loginUser = async (req, res, next) => {
+const loginUser = async (req, res, next) => {
     const { emailId, password } = req.body;
     
     try {
@@ -77,7 +77,7 @@ exports.loginUser = async (req, res, next) => {
     }
 };
 
-exports.getPackages = async (req, res, next) => {
+const getPackages = async (req, res, next) => {
     
     try {
         const packages = await packageModel.find();
@@ -100,7 +100,7 @@ exports.getPackages = async (req, res, next) => {
 };
 
 
-exports.bookSlot = async (req, res, next) => {
+const bookSlot = async (req, res, next) => {
     
     const emailId = req.body.emailId;
     const { shiftFrom, shiftTo, shiftType } = req.body.bookings;
@@ -144,10 +144,10 @@ exports.bookSlot = async (req, res, next) => {
 
 };
 
-exports.cancelBooking = async (req, res, next) => {
+const cancelBooking = async (req, res, next) => {
     
     const emailId = req.params.emailId;
-    
+
     try {
         const filter = { emailId: emailId };
         const update = {
@@ -171,4 +171,20 @@ exports.cancelBooking = async (req, res, next) => {
     }
 
 
+};
+
+
+const deleteUser = async (req, res, next) => {
+    
+    res.send("delete user is working ");
+
+};
+
+module.exports = {
+    registerUser,
+    loginUser,
+    getPackages,
+    bookSlot,
+    cancelBooking,
+    deleteUser
 };
