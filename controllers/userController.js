@@ -109,28 +109,31 @@ exports.bookSlot = async (req, res, next) => {
     try {
         const filter = { emailId: emailId };
         const update = {
-            name: 'updated name',
-            bookings: {
-                shiftFrom: shiftFrom,
-                shiftTo: shiftTo,
-                shiftType: shiftType
+            $set: {
+                bookings: {
+                    shiftFrom: shiftFrom,
+                    shiftTo: shiftTo,
+                    shiftType: shiftType
+                }
             }
-        }
-        console.log(filter);
-        console.log(update);
-        await packageModel.updateOne(filter, update)
-                        // .then(() => {
-                        //     res.status(200).json({
-                        //         message: "Booking successful"
-                        //     })
-                        // })
-                        // .catch(err => {
-                        //     err.message = "Booking failed"
-                        //     err.status = 400
-                        //     next(err)
-                        // })
-
-
+        };
+        
+        await userModel.updateOne(filter, update)
+            .then((result) => {
+                if (result.matchedCount === 0) {
+                    return res.status(404).json({
+                        message: "User not found"
+                    });
+                }
+                res.status(200).json({
+                    message: "Booking successful"
+                });
+            })
+            .catch(err => {
+                err.message = "Booking failed";
+                err.status = 400;
+                next(err);
+            });
 
     } catch(err) {
         next(err);
