@@ -67,7 +67,7 @@ exports.validateExistingEmail = async (email) => {
 };
 
 exports.validateShiftType = (shift) => {
-    if (shift.lowerCase() != 'house' || shift.lowerCase() != 'vehicle') {
+    if (shift.toLowerCase() != 'house' || shift.toLowerCase() != 'vehicle') {
         let err = new Error("Shift type is invalid");
         err.status = 400;
         throw err;

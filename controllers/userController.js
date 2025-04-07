@@ -104,9 +104,11 @@ exports.bookSlot = async (req, res, next) => {
     
     const emailId = req.body.emailId;
     const { shiftFrom, shiftTo, shiftType } = req.body.bookings;
-    //console.log(req.body.bookings);
-    //console.log(emailId);
+    
     try {
+        //validations
+        validator.validateShiftType(shiftType);
+        
         const filter = { emailId: emailId };
         const update = {
             $set: {
@@ -137,6 +139,35 @@ exports.bookSlot = async (req, res, next) => {
 
     } catch(err) {
         next(err);
+    }
+
+
+};
+
+exports.cancelBooking = async (req, res, next) => {
+    
+    const emailId = req.params.emailId;
+    
+    try {
+        const filter = { emailId: emailId };
+        const update = {
+            $unset: {
+                bookings: ""
+            }
+        }
+
+        const result = await userModel.findOneAndUpdate(filter, update, { new: true });
+        if (!result) {
+            res.status(400).json({
+                message: "user email does not exist"
+            })
+        }
+        res.status(200).json({
+            message: "Cancellation successful"
+        });
+        
+    } catch(err) {
+        next(err)
     }
 
 

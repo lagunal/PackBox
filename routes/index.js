@@ -16,6 +16,7 @@ router.get('/packages', userController.getPackages);
 
 router.put('/bookings', userController.bookSlot);
 
+router.put('/bookings/:emailId', userController.cancelBooking);
 
 
 
