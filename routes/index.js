@@ -20,5 +20,12 @@ router.put('/bookings/:emailId', cancelBooking);
 
 router.delete('/users/:emailId', deleteUser);
 
+router.all('*', (req, res) => {
+  res.status(404).json({
+    message: "invalid path request"
+  })
+});
+
+
 module.exports = router;
 
